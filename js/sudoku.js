@@ -71,7 +71,6 @@ var sudoku = {
                 //再设置行
                 if(x < 8)
                 {
-                    
                     if(this.fillInit(x + 1, y))
                         return true;
                 }
