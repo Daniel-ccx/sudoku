@@ -11,6 +11,9 @@ body {
     margin: 0px auto;
     text-align: center;
 }
+.x {
+	background-color: #eff;
+}
 
 #boxGrid {
     width:540px;

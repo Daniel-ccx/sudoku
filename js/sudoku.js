@@ -151,9 +151,14 @@ var sudoku = {
 			for(var j = 0; j < 9; j++)
 			{
 				trEle += "<td ";
+                cls = "class='";
+                if(i == j || (i+j == 8))
+                    cls += 'x ';
+
 				//纵向
 				if(j < 8 && (j+1)%3 == 0 )
-					trEle += "class='boldRight'";
+					cls += "boldRight";
+                trEle += cls + "'";
 
 				trEle += ">";
 				var disable = '';
