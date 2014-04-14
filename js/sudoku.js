@@ -67,12 +67,14 @@ var sudoku = {
             }
             else
             {
-                y = 0;
                 //再设置行
                 if(x < 8)
                 {
+                    tmp = y;
+                    y = 0;
                     if(this.fillInit(x + 1, y))
                         return true;
+                    y = tmp;
                 }
                 else
                     return true;
