@@ -58,6 +58,20 @@ var sudoku = {
             if(!this.chkUnit(x, y, n))
                 continue;
 
+            if(x > 2 && y > 2 && x == y)
+            {
+                var leftNums = this.getXLeftNumbers(this.array_init);
+                if(leftNums.indexOf(n) > -1)
+                    continue;
+            }
+
+            if(x > 2 && ((x + y) == 8))
+            {
+                var rightNums = this.getXRightNumbers(this.array_init);
+                if(rightNums.indexOf(n) > -1)
+                    continue;
+            }
+
             this.array_init[x][y] = n;
             //console.log('(', x, y, ')', n, setted);
             if(y < 8) //先设置列
@@ -105,6 +119,29 @@ var sudoku = {
         return true;
     },
 
+    //对角线检测
+    getXLeftNumbers: function(arr) {
+        var tmp = [];
+        for(var i = 0; i < 9; i++)
+        {
+            tmp.push(arr[i][i]);
+        }
+        return tmp;
+    },
+    getXRightNumbers: function(arr) {
+        var tmp = [];
+        for(var i = 0; i < 9; i++)
+        {
+            for(var j = 0; j < 9; j++)
+            {
+                if((i + j) == 8)
+                {
+                    tmp.push(arr[i][j]);
+                }
+            }
+        }
+        return tmp;
+    },
     //九宫格检测
     chkUnit: function(x, y, num) {
         var unit = this.getUnitNumbers(x, y);
@@ -189,7 +226,7 @@ var sudoku = {
 				var disable = '';
 				var val = '';
                 var complex = Math.random();
-                //if(complex > this.complexity && complex < this.complexity_upper)
+                if(complex > this.complexity && complex < this.complexity_upper)
                 {
                     disable = 'disabled';
                     val = this.array_init[i][j];
@@ -203,12 +240,14 @@ var sudoku = {
 		}
 		$(this.tableId).innerHTML = trEle;
 	},
+
 	exec: function() {
 		this.init();
 		this.fillInit();
 		this.fillTable();
 		this.rndBg();
 	},
+    //检测用户输入
     chkUserArray: function(x, y) {
         var tmp_arr = this.array_user;
         var tmp = tmp_arr[x][y];
@@ -232,12 +271,25 @@ var sudoku = {
             for(var j = 0; j < 3; j++)
             {
                 if(tmp_arr[d_x+i][d_y+j] == tmp)
-                {
-                    tmp_arr[x][y] = tmp;
                     return false;
-                }
             }
         }
+
+        //对角线
+        if(x == y)
+        {
+            var leftNums = this.getXLeftNumbers(tmp_arr);
+            if(leftNums.indexOf(tmp) > -1)
+                return false;
+        }
+
+        if((x + y) == 8)
+        {
+            var rightNums = this.getXRightNumbers(tmp_arr);
+            if(rightNums.indexOf(tmp) > -1)
+                return false;
+        }
+
         return true;
     },
 	chkResult: function() {
