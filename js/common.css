@@ -12,7 +12,7 @@ body {
     text-align: center;
 }
 .x {
-	background-color: #eff;
+	background: RGBA(204,192,190, 0.3);
 }
 
 #boxGrid {
