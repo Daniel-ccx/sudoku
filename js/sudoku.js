@@ -154,15 +154,38 @@ var sudoku = {
 			{
 				trEle += "<td ";
                 cls = "class='";
+
                 if(i == j || (i+j == 8))
                     cls += 'x ';
 
 				//纵向
 				if(j < 8 && (j+1)%3 == 0 )
-					cls += "boldRight";
+					cls += "boldRight ";
                 trEle += cls + "'";
 
-				trEle += ">";
+                var iptStyle = " style='";
+                if(i == 0 && j == 0)
+                    iptStyle += 'border-top-left-radius: 8px;';
+                else if(i == 0 && j == 8)
+                    iptStyle += 'border-top-right-radius: 8px;';
+                else if(i == 8 && j == 0)
+                    iptStyle += 'border-bottom-left-radius: 8px;';
+                else if(i == 8 && j == 8)
+                    iptStyle += 'border-bottom-right-radius: 8px;';
+
+                if(i == 0)
+                    iptStyle += 'border-top: 0px;';
+                if(i == 8)
+                    iptStyle += 'border-bottom: 0px;';
+
+                if(j == 0)
+                    iptStyle += 'border-left: 0px;';
+                if(j == 8)
+                    iptStyle += 'border-right: 0px;';
+                iptStyle += "'";
+
+				trEle += iptStyle + ">";
+
 				var disable = '';
 				var val = '';
                 var complex = Math.random();
