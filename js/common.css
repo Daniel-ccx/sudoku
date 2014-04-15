@@ -52,6 +52,9 @@ body {
     font-size: 38px;
     color: #000000;
 }
+#boxGrid input.abled {
+    background: RGBA(255,192,190, 0.5);
+}
 #boxGrid td.boldRight {
     border-right: 3px solid #B5c345;
 }

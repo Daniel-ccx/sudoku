@@ -221,6 +221,7 @@ var sudoku = {
                 trEle += iptStyle + ">";
 
                 var disable = 'disabled';
+                var cls_ipt = '';
                 var val = this.array_init[i][j];
                 var complex = Math.random();
                 var complex_upper = window.localStorage.getItem('complex_upper');
@@ -229,9 +230,10 @@ var sudoku = {
                 {
                     disable = '';
                     val = '';
+                    cls_ipt = 'abled';
                     this.array_digged.push(i + ',' + j);
                 }
-				trEle += "<input type='text' value='" + val + "' " + disable + " maxlength=1 id='g_" + i + j + "'/>";
+				trEle += "<input type='text' value='" + val + "' " + disable + " class='" + cls_ipt  + "' maxlength=1 id='g_" + i + j + "'/>";
 				trEle += "</td>";
 			}
 			trEle += "</tr>";
