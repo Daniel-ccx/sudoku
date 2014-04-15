@@ -2,8 +2,8 @@
 class sudoku
 {
     private $array_init = array();
-    private $complexity = 0.3;
-    private $complexity_upper = 0.8;
+    private $complexity = 2;
+    private $complexity_upper = 8;
 
     public function __construct()
     {
@@ -52,27 +52,25 @@ class sudoku
                     break;
                 }
             }
-            if($flag)
+            if(!$flag)
+                continue;
+            //检测九宫格
+            $d_x = floor($x / 3) * 3;
+            $d_y = floor($y / 3) * 3;
+            for($j = 0; $j < 3; $j++)
             {
-                //检测九宫格
-                $d_x = floor($x / 3) * 3;
-                $d_y = floor($y / 3) * 3;
-                for($j = 0; $j < 3; $j++)
+                for($k = 0; $k < 3; $k++)
                 {
-                    for($k = 0; $k < 3; $k++)
+                    if($this->array_init[$d_x + $j][$d_y + $k] == $n)
                     {
-                        if($this->array_init[$d_x + $j][$d_y + $k] == $n)
-                        {
-                            $flag =false;
-                            break;
-                        }
-                    }
-                    if(!$flag)
+                        $flag =false;
                         break;
+                    }
                 }
-
+                if(!$flag)
+                    break;
             }
-            else
+            if(!$flag)
                 continue;
 
             //开始设置
@@ -85,11 +83,13 @@ class sudoku
             }
             else
             {
-                $y = 0;
                 if($x < 8)
                 {
+                    $tmp = $y;
+                    $y = 0;
                     if($this->init($x + 1, $y))
                         return true;
+                    $y = $tmp;
                 }
                 else
                     return true;
@@ -103,10 +103,24 @@ class sudoku
     public function generate()
     {
         $this->init();
-        echo json_encode($this->array_init);
-        exit;
+        return $this->array_init;
+    }
+
+    //获取矩阵
+    public function getSudoku()
+    {
+        $tmp = $this->array_init;
+        for($i = 0; $i < 9; $i++)
+        {
+            for($j = 0; $j < 9; $j++)
+            {
+                $complex = rand(1, 10);
+
+                if($complex > $this->complexity && $complex < $this->complexity_upper)
+                    $tmp[$i][$j] = '';
+                
+            }
+        }
+        return $tmp;
     }
 }
-
-$sudoku = new sudoku();
-$sudoku->generate();
