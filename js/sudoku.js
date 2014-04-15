@@ -1,27 +1,26 @@
 function $(id) {
-	return document.getElementById(id);
+    return document.getElementById(id);
 }
 
-//生成数独矩阵使用挖洞算法
-var counter = 0;
+//生成数独矩阵使用挖洞思想
 var sudoku = {
-	array_init: [],//程序初始的矩阵
-	array_user: [],//玩家输入的结果矩阵
+    array_init: [],//程序初始的矩阵
+    array_user: [],//玩家输入的结果矩阵
     array_digged: [],//随机挖掉的坐标记录
-	complexity: 0.3,
-    complexity_upper: 0.8,
-	tableId: "boxGrid",
-	
-	rndBg: function() {
-		var bg_num = Math.ceil(Math.random() + Math.random());
+    complexity: 0.1,
+    tableId: "boxGrid",
+    
+    rndBg: function() {
+        //var bg_num = Math.ceil(Math.random() + Math.random());
+        var bg_num = 2;
 
-		$(this.tableId).className = "bg_" + bg_num;
-	},
+        $(this.tableId).className = "bg_" + bg_num;
+    },
 
-	init: function() {
-		for(var i = 0; i < 9; i++)
-		{
-			this.array_init[i] = new Array();
+    init: function() {
+        for(var i = 0; i < 9; i++)
+        {
+            this.array_init[i] = new Array();
             var tempArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             for(var j=0; j < 9; j++)
             {
@@ -37,10 +36,10 @@ var sudoku = {
                 }
                 this.array_init[i][j] = 0;
             }
-		}
-	},
+        }
+    },
 
-	//递归
+    //递归
     fillInit: function(x, y) {
         x = arguments[0] || 1;
         y = arguments[1] || 0;
@@ -73,7 +72,6 @@ var sudoku = {
             }
 
             this.array_init[x][y] = n;
-            //console.log('(', x, y, ')', n, setted);
             if(y < 8) //先设置列
             {
                 if(this.fillInit(x, y + 1))
@@ -94,11 +92,10 @@ var sudoku = {
                     return true;
             }
             this.array_init[x][y] = 0;
-            //console.log('un:(', x, y, ')', n, setted);
         }
 
-		return false;
-	},
+        return false;
+    },
     //行重复检测
     chkRow: function(x, num) {
         if((this.array_init[x] && this.array_init[x].indexOf(num) > -1 ))
@@ -152,52 +149,52 @@ var sudoku = {
         return true;
     },
 
-	//获取九宫格域
-	getDistrict: function(n) {
-		return parseInt(n/3) * 3;
-	},
+    //获取九宫格域
+    getDistrict: function(n) {
+        return parseInt(n/3) * 3;
+    },
     //获取九宫格内的数字
-	getUnitNumbers: function(x, y) {
-		var d_x = this.getDistrict(x);
-		var d_y = this.getDistrict(y);
-		var temp = [];
-		for(var i = 0; i < x; i++)
-		{
-			var d_i = this.getDistrict(i);
+    getUnitNumbers: function(x, y) {
+        var d_x = this.getDistrict(x);
+        var d_y = this.getDistrict(y);
+        var temp = [];
+        for(var i = 0; i < x; i++)
+        {
+            var d_i = this.getDistrict(i);
 
-			for(var j = 0; j < (d_y+3); j++)
-			{
-				//j所在区域
-				var d_j = this.getDistrict(j);
-				if(d_i == d_x && d_j == d_y)
-				{
-					temp.push(this.array_init[i][j]);
-				}
-			}
-		}
-		return temp;
-	},	
-	fillTable: function() {
-		//填充行
-		var trEle = "";
-		for(var i = 0; i < 9; i++)
-		{
-			trEle += "<tr ";
-			//横向
-			if(i < 8 && (i+1)%3 == 0)
-				trEle += "class='boldBottom'";
-			trEle += ">";
-			for(var j = 0; j < 9; j++)
-			{
-				trEle += "<td ";
+            for(var j = 0; j < (d_y+3); j++)
+            {
+                //j所在区域
+                var d_j = this.getDistrict(j);
+                if(d_i == d_x && d_j == d_y)
+                {
+                    temp.push(this.array_init[i][j]);
+                }
+            }
+        }
+        return temp;
+    },    
+    fillTable: function() {
+        //填充行
+        var trEle = "";
+        for(var i = 0; i < 9; i++)
+        {
+            trEle += "<tr ";
+            //横向
+            if(i < 8 && (i+1)%3 == 0)
+                trEle += "class='boldBottom'";
+            trEle += ">";
+            for(var j = 0; j < 9; j++)
+            {
+                trEle += "<td ";
                 cls = "class='";
 
                 if(i == j || (i+j == 8))
                     cls += 'x ';
 
-				//纵向
-				if(j < 8 && (j+1)%3 == 0 )
-					cls += "boldRight ";
+                //纵向
+                if(j < 8 && (j+1)%3 == 0 )
+                    cls += "boldRight ";
                 trEle += cls + "'";
 
                 var iptStyle = " style='";
@@ -221,15 +218,17 @@ var sudoku = {
                     iptStyle += 'border-right: 0px;';
                 iptStyle += "'";
 
-				trEle += iptStyle + ">";
+                trEle += iptStyle + ">";
 
-				var disable = '';
-				var val = '';
+                var disable = 'disabled';
+                var val = this.array_init[i][j];
                 var complex = Math.random();
-                if(complex > this.complexity && complex < this.complexity_upper)
+                var complex_upper = window.localStorage.getItem('complex_upper');
+
+                if(complex > this.complexity && complex < complex_upper)
                 {
-                    disable = 'disabled';
-                    val = this.array_init[i][j];
+                    disable = '';
+                    val = '';
                     this.array_digged.push(i + ',' + j);
                 }
 				trEle += "<input type='text' value='" + val + "' " + disable + " maxlength=1 id='g_" + i + j + "'/>";
@@ -259,13 +258,11 @@ var sudoku = {
         for(var i = 0; i < 9; i++)
         {
             if(tmp_arr[i][y] == tmp)
-            {
                 return false;
-            }
         }
 
-		var d_x = this.getDistrict(x);
-		var d_y = this.getDistrict(y);
+        var d_x = this.getDistrict(x);
+        var d_y = this.getDistrict(y);
         for(var i = 0; i < 3; i++)
         {
             for(var j = 0; j < 3; j++)
@@ -292,22 +289,22 @@ var sudoku = {
 
         return true;
     },
-	chkResult: function() {
-		//获取客户端的整个矩阵
-		for(var i = 0; i < 9; i++)
-		{
+    chkResult: function() {
+        //获取客户端的整个矩阵
+        for(var i = 0; i < 9; i++)
+        {
             this.array_user[i] = [];
-			for(var j = 0; j < 9; j++)
-			{
-				var val = parseInt($('g_' + i + j).value);
-				if(!val)
-				{
-					alert("您尚未完成此题目，请完成后再检查结果");
-					return;
-				}
-				this.array_user[i][j] = val;
-			}
-		}
+            for(var j = 0; j < 9; j++)
+            {
+                var val = parseInt($('g_' + i + j).value);
+                if(!val)
+                {
+                    alert("您尚未完成此题目，请完成后再检查结果");
+                    return;
+                }
+                this.array_user[i][j] = val;
+            }
+        }
 
         //检测客户端的矩阵数字是否合法
         for(var i = 0; i < this.array_digged.length; i++)
@@ -321,6 +318,6 @@ var sudoku = {
         }
         alert("congratulations");
         return;
-	}
+    }
 }
 sudoku.exec();
