@@ -24,20 +24,19 @@ class crack {
             {
                 if($this->solve($x, $y+1))
                     return true;
-                return false;
             }
             else
             {
                 $y = 0;
                 if($this->solve($x+1, $y))
                     return true;
-                $this->array_sudoku[$x][$y] = '';
             }
         }
         else
         {
             for($n = 1; $n < 10; $n++)
             {
+
                 if(in_array($n, $this->array_sudoku[$x]))
                     continue;
 
@@ -74,6 +73,11 @@ class crack {
 
                 //开始设置
                 $this->array_sudoku[$x][$y] = $n;
+                if(($x == 0 && $x == $y) || ($x == 0 && $y < 9))
+                {
+                    //echo $y. '<<<<<<<'. $flag.'===='.$this->array_sudoku[$x][$y] . '//' . $n;
+                    //var_dump($this->array_sudoku[$x]);
+                }
                 if($y < 8)
                 {
                     if($this->solve($x, $y + 1))
@@ -84,6 +88,15 @@ class crack {
                     $y = 0;
                     if($this->solve($x + 1, $y))
                         return true;
+                }
+                if(($x == 0 && $y < 9) || ($x < 3 && $y < 9))
+                {
+                    if($x > 0 && $x < 3)
+                        var_dump($this->array_sudoku[0], 'ttttt'.$x);
+                    var_dump($this->array_sudoku[$x]);
+                    echo "<br>";
+                    echo "testaaa" . $x . $y;
+                    echo "<hr>";
                 }
 
                 $this->array_sudoku[$x][$y] = '';
