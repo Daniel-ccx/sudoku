@@ -18,18 +18,18 @@ class crack {
     {
         if($x > 8 || $y > 8)
             return true;
-        if($this->array_sudoku[$x][$y] != '')
+
+        if(!empty($this->array_sudoku[$x][$y]))
         {
             if($y < 8)
-            {
-                if($this->solve($x, $y+1))
-                    return true;
-            }
+                return $this->solve($x, $y+1);
             else
             {
+                $tmp = $y;
                 $y = 0;
                 if($this->solve($x+1, $y))
                     return true;
+                $y = $tmp;
             }
         }
         else
@@ -85,18 +85,11 @@ class crack {
                 }
                 else
                 {
+                    $tmp = $y;
                     $y = 0;
                     if($this->solve($x + 1, $y))
                         return true;
-                }
-                if(($x == 0 && $y < 9) || ($x < 3 && $y < 9))
-                {
-                    if($x > 0 && $x < 3)
-                        var_dump($this->array_sudoku[0], 'ttttt'.$x);
-                    var_dump($this->array_sudoku[$x]);
-                    echo "<br>";
-                    echo "testaaa" . $x . $y;
-                    echo "<hr>";
+                    $y = $tmp;
                 }
 
                 $this->array_sudoku[$x][$y] = '';
