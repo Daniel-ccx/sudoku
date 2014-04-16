@@ -16,6 +16,18 @@ $sudoku_arr = array(
     7 => array(7, '', 4, 9, 3, '', '', 5, ''),
     8 => array('', '', '', '', '', '', 6, 4, '')
 );
+$start = microtime(true);
+$sudoku_arr = array(
+    0 => array('', '', '2', '', '3', '9', '', '4', ''),
+    1 => array('', '1', '', '', '7', '', '', '', ''),
+    2 => array('', '', '5', '', '', '8', '', '', ''),
+    3 => array('', '', '', '8', '', '4', '2', '', '9'),
+    4 => array('5', '', '', '7', '', '3', '', '', '1'),
+    5 => array('2', '', '8', '6', '', '1', '', '', ''),
+    6 => array('', '', '', '4', '', '', '9', '', ''),
+    7 => array('', '', '', '', '8', '', '', '7', ''),
+    8 => array('', '4', '', '9', '6', '', '8', '', '')
+);
 
 $original = array(
     0 => array(1,4,9,3,6,5,2,8,7),
@@ -34,7 +46,7 @@ $crack->solve();
 $solution = $crack->getSolution();
 echo "<style>table td{width: 30px; height:30px; border: 1px solid green;text-align:center;}</style>";
 
-echo "item:`";
+echo "item:";
 echo "<table>";
 foreach($sudoku_arr as $k => $v)
 {
@@ -47,7 +59,7 @@ foreach($sudoku_arr as $k => $v)
 }
 echo "</table>";
 
-echo "original:<br>";
+/*echo "original:<br>";
 echo "<table>";
 foreach($original as $k => $v)
 {
@@ -59,6 +71,7 @@ foreach($original as $k => $v)
     echo "</tr>";
 }
 echo "</table>";
+ */
 echo "solved:";
 echo "<br>";
 
@@ -74,3 +87,7 @@ foreach($solution as $k => $v)
     echo "</tr>";
 }
 echo "</table>";
+$end = microtime(true);
+echo "It took:";
+echo $end - $start;
+echo " Seconds";
